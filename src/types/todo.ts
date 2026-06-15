@@ -5,7 +5,7 @@ export interface Todo {
   completed: boolean;
   priority: 'low' | 'medium' | 'high';
   category: string;
-  dueDate: string | null;
+  due_date: string | null;
   position: number;
   userId: string;
   createdAt: string;
@@ -13,6 +13,6 @@ export interface Todo {
 }
 
 export type TodoCreate = Pick<Todo, 'title'> &
-  Partial<Pick<Todo, 'description' | 'priority' | 'category' | 'dueDate'>>;
+  Partial<Pick<Todo, 'description' | 'priority' | 'category' | 'due_date'>>;
 
 export type TodoUpdate = Partial<Omit<Todo, 'id' | 'userId' | 'createdAt' | 'updatedAt'>>;
