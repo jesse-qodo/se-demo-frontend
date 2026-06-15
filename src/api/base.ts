@@ -15,10 +15,8 @@ import { auth } from '../firebase';
 // these and keeps its own copies). The Firebase ID token is attached on
 // every call so the Go middleware can resolve the user.
 export async function authHeaders(): Promise<HeadersInit> {
-  const token = await auth.currentUser?.getIdToken();
   return {
     'Content-Type': 'application/json',
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
 }
 
