@@ -63,7 +63,7 @@ export async function updateTodo(id: string, data: TodoUpdate): Promise<Todo> {
 }
 
 export async function patchTodo(id: string, data: Partial<TodoUpdate>): Promise<Todo> {
-  const res = await fetch(`${BASE}/${id}`, {
+  const res = await fetch(`${BASE}/${id}/update`, {
     method: 'PATCH',
     headers: await headers(),
     body: JSON.stringify(data),
