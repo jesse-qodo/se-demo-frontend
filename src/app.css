@@ -1,0 +1,855 @@
+/* App-wide contrast bump.
+ *
+ * Mantine's defaults (gray-9 text on gray-0 light / gray-0 text on dark-7 bg)
+ * land a bit washed-out on modern monitors. These overrides push text toward
+ * pure black/white and deepen the background a touch in each scheme — a
+ * Mantine-shipped override hook, not a hard fork of the theme colors.
+ */
+
+/* Light mode: crisper text on a whiter canvas. */
+[data-mantine-color-scheme='light'] {
+  --mantine-color-text: #0a0a0f;
+  --mantine-color-body: #fefeff;
+  --mantine-color-dimmed: #4a4a55;
+  --mantine-color-placeholder: #6a6a75;
+  --mantine-color-default-border: #b9b9c2;
+}
+
+/* Dark mode: brighter text on a deeper background. */
+[data-mantine-color-scheme='dark'] {
+  --mantine-color-text: #f3f3f7;
+  --mantine-color-body: #0d0d12;
+  --mantine-color-dimmed: #a6a6b0;
+  --mantine-color-placeholder: #8a8a95;
+  --mantine-color-default-border: #33333d;
+}
+
+/* react-big-calendar: inherit theme colors so it reads in light + dark. */
+.synthwave-calendar .rbc-calendar {
+  color: var(--mantine-color-text);
+}
+.synthwave-calendar .rbc-off-range-bg {
+  background: color-mix(in srgb, var(--mantine-color-body) 70%, transparent);
+}
+.synthwave-calendar .rbc-today {
+  background: var(--mantine-color-synthPurple-light);
+}
+.synthwave-calendar .rbc-toolbar button {
+  color: var(--mantine-color-text);
+  background-color: transparent;
+  border-color: var(--mantine-color-default-border);
+}
+/* rbc's defaults paint a light (#e6e6e6) background on hover/focus/active,
+ * which leaves light text unreadable in dark mode. Repaint these states with
+ * theme colors so contrast holds in both schemes. */
+.synthwave-calendar .rbc-toolbar button:hover,
+.synthwave-calendar .rbc-toolbar button:focus,
+.synthwave-calendar .rbc-toolbar button:active {
+  background-color: var(--mantine-color-synthPurple-light);
+  color: var(--mantine-color-text);
+  border-color: var(--mantine-color-synthPurple-6);
+}
+.synthwave-calendar .rbc-toolbar button.rbc-active,
+.synthwave-calendar .rbc-toolbar button.rbc-active:hover,
+.synthwave-calendar .rbc-toolbar button.rbc-active:focus {
+  background-color: var(--mantine-color-synthPurple-6);
+  color: #fff;
+  border-color: var(--mantine-color-synthPurple-6);
+}
+.synthwave-calendar .rbc-month-view,
+.synthwave-calendar .rbc-time-view,
+.synthwave-calendar .rbc-header,
+.synthwave-calendar .rbc-day-bg + .rbc-day-bg,
+.synthwave-calendar .rbc-month-row + .rbc-month-row,
+.synthwave-calendar .rbc-time-content,
+.synthwave-calendar .rbc-time-header-content,
+.synthwave-calendar .rbc-timeslot-group {
+  border-color: var(--mantine-color-default-border);
+}
+
+/* Markdown preview spacing in the Notes app. */
+.md-preview :first-child { margin-top: 0; }
+.md-preview h1, .md-preview h2, .md-preview h3 { margin: 0.6em 0 0.3em; }
+.md-preview p { margin: 0.4em 0; }
+.md-preview ul, .md-preview ol { padding-left: 1.4em; margin: 0.4em 0; }
+.md-preview code {
+  background: var(--mantine-color-synthPurple-light);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+.md-preview blockquote {
+  border-left: 3px solid var(--mantine-color-synthPurple-6);
+  margin: 0.5em 0;
+  padding-left: 0.8em;
+  color: var(--mantine-color-dimmed);
+}
+
+/* ── Marvin animated SVG robot (chat panel) ──────────────────────────────── */
+.marvin-robot {
+  animation: marvinFloat 3.2s ease-in-out infinite;
+  filter: drop-shadow(0 0 7px rgba(155, 93, 229, 0.45));
+}
+.marvin-robot.thinking {
+  animation-duration: 1.5s;
+}
+@keyframes marvinFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.marvin-antenna-tip {
+  transform-box: fill-box;
+  transform-origin: center;
+  filter: drop-shadow(0 0 5px #ff2e97);
+  animation: marvinPulse 1.8s ease-in-out infinite;
+}
+.marvin-robot.thinking .marvin-antenna-tip {
+  animation-duration: 0.5s;
+}
+@keyframes marvinPulse {
+  0%, 100% { opacity: 0.55; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.25); }
+}
+
+.marvin-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  filter: drop-shadow(0 0 4px #39ff14);
+  animation: marvinBlink 5s ease-in-out infinite;
+}
+.marvin-eye-2 { animation-delay: 0.15s; }
+.marvin-robot.thinking .marvin-eye { animation-duration: 1.4s; }
+@keyframes marvinBlink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.12); }
+}
+
+/* Mouth bars: flat-ish when idle, equalizer "talk" while thinking. */
+.marvin-bar {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  transform: scaleY(0.35);
+}
+.marvin-robot.thinking .marvin-bar { animation: marvinTalk 0.7s ease-in-out infinite; }
+.marvin-robot.thinking .marvin-bar:nth-child(1) { animation-delay: 0s; }
+.marvin-robot.thinking .marvin-bar:nth-child(2) { animation-delay: 0.1s; }
+.marvin-robot.thinking .marvin-bar:nth-child(3) { animation-delay: 0.2s; }
+.marvin-robot.thinking .marvin-bar:nth-child(4) { animation-delay: 0.15s; }
+.marvin-robot.thinking .marvin-bar:nth-child(5) { animation-delay: 0.05s; }
+@keyframes marvinTalk {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marvin-robot, .marvin-robot * { animation: none !important; }
+}
+
+/* ── Risk animated AI general avatars ───────────────────────────────────── */
+.risk-avatar-frame {
+  width: var(--risk-avatar-size);
+  height: var(--risk-avatar-size);
+  min-width: var(--risk-avatar-size);
+  display: inline-grid;
+  place-items: center;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--risk-avatar-accent) 78%, #ffffff 12%);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 48%, color-mix(in srgb, var(--risk-avatar-accent-soft) 70%, transparent) 0 34%, transparent 56%),
+    #080912;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 16px color-mix(in srgb, var(--risk-avatar-accent) 45%, transparent);
+  transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+  flex: 0 0 auto;
+}
+
+.risk-avatar-frame:hover,
+.risk-avatar-frame:focus-visible {
+  transform: translateY(-1px);
+  border-color: var(--risk-avatar-accent);
+  outline: none;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 0 20px color-mix(in srgb, var(--risk-avatar-accent) 60%, transparent);
+}
+
+.risk-avatar-frame.is-active {
+  border-color: var(--risk-avatar-accent);
+}
+
+.risk-avatar-frame.is-thinking {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 0 24px color-mix(in srgb, var(--risk-avatar-accent) 72%, transparent);
+}
+
+.risk-avatar-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.risk-avatar-fallback {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  font-size: calc(var(--risk-avatar-size) * 0.48);
+  line-height: 1;
+}
+
+/* ── Risk dice roll: short tumble before settling on the result ─────────── */
+@keyframes riskDieRoll {
+  0%   { transform: rotate(-20deg) scale(0.85); opacity: 0; }
+  40%  { transform: rotate(15deg) scale(1.05); opacity: 1; }
+  70%  { transform: rotate(-6deg) scale(0.98); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+/* ── Radio: 80s cassette boombox skin ──────────────────────────────────── */
+.radio-page {
+  padding-block: 8px 28px;
+}
+
+.radio-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 700px) minmax(260px, 320px);
+  gap: 24px;
+  align-items: start;
+}
+
+.radio-kicker {
+  color: var(--mantine-color-neonPink-6);
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.radio-title {
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.radio-live-badge {
+  min-width: 86px;
+  background: #30333d;
+  color: #f7f8fb;
+  border: 1px solid #5a6070;
+  letter-spacing: 0;
+}
+
+.radio-live-badge.is-live {
+  background: #0a7f73;
+  color: #ffffff;
+  border-color: #19d5bd;
+  box-shadow: 0 0 16px rgba(25, 213, 189, 0.35);
+}
+
+.radio-boombox {
+  position: relative;
+  max-width: 700px;
+  padding: 54px 8px 0;
+  color: #f7f8fb;
+}
+
+.radio-boombox-handle {
+  position: absolute;
+  top: 0;
+  left: 16%;
+  width: 68%;
+  height: 78px;
+  border: 13px solid #14161d;
+  border-bottom: 0;
+  border-radius: 48px 48px 0 0;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.18), transparent 18% 82%, rgba(255, 255, 255, 0.12)),
+    #242734;
+  box-shadow: inset 0 9px 0 rgba(255, 255, 255, 0.08);
+}
+
+.radio-boombox-face {
+  position: relative;
+  overflow: hidden;
+  padding: 18px;
+  border: 3px solid #080910;
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, #353945 0%, #171922 44%, #312c3a 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -12px 22px rgba(0, 0, 0, 0.45),
+    0 24px 42px rgba(0, 0, 0, 0.28);
+}
+
+.radio-boombox-face::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 18px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.14), transparent 28%);
+}
+
+.radio-top-row {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 126px minmax(0, 1fr);
+  gap: 14px;
+  align-items: stretch;
+  margin-bottom: 14px;
+}
+
+.radio-brand {
+  display: grid;
+  place-content: center;
+  min-height: 82px;
+  border: 2px solid #080910;
+  border-radius: 6px;
+  background:
+    linear-gradient(145deg, #f6d457, #ed5f8d 48%, #4ee0df);
+  color: #11131a;
+  font-weight: 900;
+  line-height: 0.92;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  box-shadow: inset 0 -7px 0 rgba(0, 0, 0, 0.18);
+}
+
+.radio-brand span {
+  display: block;
+  letter-spacing: 0;
+}
+
+.radio-tuner {
+  position: relative;
+  min-width: 0;
+  min-height: 82px;
+  padding: 8px;
+  border: 2px solid #05070c;
+  border-radius: 6px;
+  background:
+    linear-gradient(180deg, #0a0d15, #101421 58%, #07090f);
+  box-shadow: inset 0 0 22px rgba(0, 229, 255, 0.16);
+}
+
+.radio-tuner-dial {
+  height: 100%;
+  min-height: 66px;
+  padding: 5px;
+  border: 1px solid rgba(246, 212, 87, 0.45);
+  border-radius: 5px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 32%),
+    #0b0f16;
+  box-shadow:
+    inset 0 0 18px rgba(78, 224, 223, 0.12),
+    inset 0 -8px 18px rgba(0, 0, 0, 0.42);
+}
+
+.radio-tuner-glass {
+  position: relative;
+  display: grid;
+  gap: 7px;
+  height: 100%;
+  min-height: 56px;
+  padding: 7px 12px 7px 9px;
+  overflow: hidden;
+  border-radius: 4px;
+  background:
+    linear-gradient(105deg, rgba(255, 255, 255, 0.14), transparent 26% 70%, rgba(255, 255, 255, 0.08)),
+    linear-gradient(180deg, #141c24, #06090f);
+}
+
+.radio-tuner-glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 7px, rgba(255, 255, 255, 0.025) 7px 8px);
+}
+
+.radio-tuner-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 8px;
+  align-items: end;
+  z-index: 1;
+}
+
+.radio-tuner-row-fm {
+  align-items: start;
+}
+
+.radio-band-label {
+  color: #4ee0df;
+  letter-spacing: 0;
+  text-shadow: 0 0 7px rgba(78, 224, 223, 0.42);
+}
+
+.radio-tuner-track {
+  min-width: 0;
+  padding-top: 2px;
+}
+
+.radio-tuner-ticks {
+  display: grid;
+  grid-template-columns: repeat(25, 1fr);
+  align-items: end;
+  height: 15px;
+  border-bottom: 2px solid #f6d457;
+}
+
+.radio-tuner-ticks span {
+  justify-self: center;
+  width: 1px;
+  height: 7px;
+  background: rgba(246, 212, 87, 0.72);
+}
+
+.radio-tuner-ticks span.is-major {
+  width: 2px;
+  height: 14px;
+  background: #f6d457;
+  box-shadow: 0 0 5px rgba(246, 212, 87, 0.4);
+}
+
+.radio-tuner-numbers {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+  margin-top: 3px;
+  color: #f7e6a2;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-align: center;
+  text-shadow: 0 0 6px rgba(246, 212, 87, 0.25);
+}
+
+.radio-tuner-needle {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 64%;
+  z-index: 2;
+  width: 3px;
+  background: #ff4f96;
+  box-shadow: 0 0 11px rgba(255, 79, 150, 0.9);
+}
+
+.radio-tuner-needle::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 13px;
+  height: 7px;
+  border-radius: 2px;
+  background: #ff4f96;
+  transform: translateX(-50%);
+}
+
+.radio-signal-meter {
+  position: absolute;
+  right: 12px;
+  bottom: 9px;
+  z-index: 2;
+  display: flex;
+  gap: 3px;
+  align-items: end;
+}
+
+.radio-signal-meter span {
+  width: 4px;
+  height: 7px;
+  border-radius: 1px;
+  background: rgba(78, 224, 223, 0.5);
+}
+
+.radio-signal-meter span:nth-child(2) {
+  height: 11px;
+}
+
+.radio-signal-meter span:nth-child(3) {
+  height: 15px;
+}
+
+.radio-signal-meter span.is-hot {
+  height: 20px;
+  background: #4ee0df;
+  box-shadow: 0 0 8px rgba(78, 224, 223, 0.65);
+}
+
+.radio-deck-row {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) minmax(280px, 420px) minmax(150px, 1fr);
+  gap: 16px;
+  align-items: center;
+}
+
+.radio-speaker {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  min-width: 0;
+  border: 3px solid #090a11;
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(circle, #0a0b11 0 8px, #2b303b 8px 12px),
+    #151821;
+  box-shadow:
+    inset 0 0 20px rgba(0, 0, 0, 0.72),
+    0 0 0 8px rgba(255, 255, 255, 0.05);
+}
+
+.radio-speaker-ring {
+  display: grid;
+  place-items: center;
+  width: 58%;
+  aspect-ratio: 1;
+  border: 2px solid rgba(246, 212, 87, 0.75);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.34);
+}
+
+.radio-speaker-core {
+  width: 38%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #4ee0df, #1d5663 55%, #11131a);
+  box-shadow: 0 0 14px rgba(78, 224, 223, 0.28);
+}
+
+.radio-cassette-wrap {
+  position: relative;
+  min-width: 0;
+  max-width: 370px;
+  padding: 10px;
+  border: 2px solid #07080e;
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, #0f1118, #252936 46%, #101219);
+  box-shadow:
+    inset 0 3px 8px rgba(255, 255, 255, 0.08),
+    inset 0 -10px 20px rgba(0, 0, 0, 0.52);
+}
+
+.radio-cassette {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 12px 14px rgba(0, 0, 0, 0.35));
+}
+
+.radio-cassette-label {
+  position: absolute;
+  top: 27%;
+  left: 20%;
+  right: 20%;
+  color: #11131a;
+  line-height: 1.15;
+  text-align: center;
+  pointer-events: none;
+}
+
+.radio-cassette-label .mantine-Text-root {
+  letter-spacing: 0;
+}
+
+.radio-tape-wheel {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.radio-boombox.is-playing .radio-tape-wheel-left,
+.radio-cassette.is-playing .radio-tape-wheel-left {
+  animation: radioTapeWheel 1.45s linear infinite;
+}
+
+.radio-boombox.is-playing .radio-tape-wheel-right,
+.radio-cassette.is-playing .radio-tape-wheel-right {
+  animation: radioTapeWheel 1.28s linear infinite reverse;
+}
+
+@keyframes radioTapeWheel {
+  to { transform: rotate(360deg); }
+}
+
+.radio-control-deck {
+  position: relative;
+  z-index: 1;
+  margin: 16px auto 0;
+  padding: 8px;
+  width: min(100%, 320px);
+  border: 2px solid #07080e;
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, #252936, #11131a);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.radio-deck-button {
+  --ai-bg: #2f3440;
+  --ai-hover: #3c4352;
+  --ai-color: #f7f8fb;
+  border: 1px solid #07080e;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -5px 0 rgba(0, 0, 0, 0.38),
+    0 5px 0 #07080e;
+}
+
+.radio-deck-button:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.35),
+    0 2px 0 #07080e;
+}
+
+.radio-deck-button-primary {
+  --ai-bg: #e94d8e;
+  --ai-hover: #f06aa2;
+}
+
+.radio-tape-stack {
+  position: sticky;
+  top: 78px;
+  padding: 12px;
+  border: 2px solid #080910;
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 18%),
+    linear-gradient(145deg, #262a35, #10131b);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -14px 22px rgba(0, 0, 0, 0.38);
+}
+
+.radio-tape-stack-title {
+  margin: 0 4px 10px;
+  color: #f6d457;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.radio-tape-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) 54px 26px;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+  min-height: 76px;
+  padding: 10px 9px;
+  border: 2px solid #07080e;
+  border-radius: 7px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22), transparent 28%),
+    linear-gradient(135deg, #f6d457, #ef7fa6 52%, #4ee0df);
+  color: #11131a;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  box-shadow:
+    inset 0 -6px 0 rgba(0, 0, 0, 0.16),
+    0 5px 0 #080910;
+  transition: transform 140ms ease, filter 140ms ease, box-shadow 140ms ease;
+}
+
+.radio-tape-card::before,
+.radio-tape-card::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #171922;
+  opacity: 0.8;
+}
+
+.radio-tape-card::before {
+  top: 8px;
+  right: 8px;
+}
+
+.radio-tape-card::after {
+  bottom: 8px;
+  right: 8px;
+}
+
+.radio-tape-card:hover,
+.radio-tape-card:focus-visible {
+  outline: none;
+  filter: brightness(1.05);
+  transform: translateX(-3px);
+  box-shadow:
+    inset 0 -6px 0 rgba(0, 0, 0, 0.16),
+    0 5px 0 #080910,
+    0 0 18px rgba(78, 224, 223, 0.24);
+}
+
+.radio-tape-card:active {
+  transform: translate(-3px, 3px);
+  box-shadow:
+    inset 0 -3px 0 rgba(0, 0, 0, 0.18),
+    0 2px 0 #080910;
+}
+
+.radio-tape-card.is-current {
+  border-color: #f7e6a2;
+  box-shadow:
+    inset 0 -6px 0 rgba(0, 0, 0, 0.16),
+    0 5px 0 #080910,
+    0 0 20px rgba(255, 79, 150, 0.32);
+}
+
+.radio-tape-card.is-empty {
+  cursor: default;
+  opacity: 0.7;
+  filter: saturate(0.45);
+}
+
+.radio-tape-card.is-empty:hover,
+.radio-tape-card.is-empty:focus-visible {
+  transform: none;
+  box-shadow:
+    inset 0 -6px 0 rgba(0, 0, 0, 0.16),
+    0 5px 0 #080910;
+}
+
+.radio-tape-spine {
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  border-radius: 4px;
+  background: #151821;
+  color: #f6d457;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+.radio-tape-label {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 7px 8px;
+  border-radius: 4px;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 11px, rgba(17, 19, 26, 0.08) 11px 12px),
+    #fff6d7;
+}
+
+.radio-tape-label .mantine-Text-root {
+  color: inherit;
+  letter-spacing: 0;
+}
+
+.radio-tape-reels {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.radio-tape-reels span {
+  width: 20px;
+  height: 20px;
+  border: 5px solid #181823;
+  border-radius: 50%;
+  background: #fff6d7;
+  box-shadow: inset 0 0 0 2px rgba(78, 224, 223, 0.35);
+}
+
+.radio-tape-play-state {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background: #171922;
+  color: #f7f8fb;
+}
+
+@media (max-width: 940px) {
+  .radio-stage {
+    grid-template-columns: 1fr;
+  }
+
+  .radio-boombox {
+    justify-self: center;
+    width: 100%;
+  }
+
+  .radio-tape-stack {
+    position: static;
+  }
+}
+
+@media (max-width: 760px) {
+  .radio-boombox {
+    padding-top: 48px;
+  }
+
+  .radio-boombox-handle {
+    left: 12%;
+    width: 76%;
+    height: 72px;
+    border-width: 12px;
+  }
+
+  .radio-boombox-face {
+    padding: 16px;
+  }
+
+  .radio-top-row,
+  .radio-deck-row {
+    grid-template-columns: 1fr;
+  }
+
+  .radio-brand {
+    min-height: 62px;
+  }
+
+  .radio-speaker {
+    display: none;
+  }
+
+  .radio-cassette-wrap {
+    max-width: 430px;
+    margin-inline: auto;
+  }
+
+  .radio-control-deck {
+    width: min(100%, 330px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .risk-avatar-frame {
+    transition: none;
+  }
+
+  .risk-avatar-frame:hover,
+  .risk-avatar-frame:focus-visible {
+    transform: none;
+  }
+
+  .radio-boombox.is-playing .radio-tape-wheel,
+  .radio-cassette.is-playing .radio-tape-wheel,
+  .radio-deck-button:active {
+    animation: none !important;
+    transform: none !important;
+  }
+}
