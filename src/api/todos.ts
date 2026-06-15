@@ -37,7 +37,7 @@ export interface SearchOptions {
 // query is active.
 export async function searchTodos(q: string, opts: SearchOptions = {}): Promise<Todo[]> {
   const params = new URLSearchParams({ q });
-  if (opts.completed !== undefined) params.set('completed', String(opts.completed));
+  if (opts.completed !== undefined) params.set('completed', opts.completed ? '1' : '0');
   if (opts.priority) params.set('priority', opts.priority);
   if (opts.limit) params.set('limit', String(opts.limit));
   const res = await fetch(`${BASE}/search?${params.toString()}`, { headers: await headers() });
